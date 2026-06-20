@@ -168,34 +168,93 @@ class Pivot {
 class Guard {
   final int? id;
   final int? userId;
+  // Admin-controlled (read-only in the app)
+  final int? guardId;
+  final dynamic guardType;
+  final String? joinDate;
+  final int? payPerHour;
+  // Guard-editable personal detail
   final String? gender;
+  final String? dob;
+  final String? language;
+  final String? height;
+  final String? weight;
   final String? city;
   final String? state;
   final String? country;
+  final String? zipCode;
   final String? address;
-  final int? payPerHour;
+  // Mandatory + driving documents (file name on server) + expiry
+  final String? securityLicense;
+  final String? securityLicenseExpire;
+  final String? firstAid;
+  final String? firstAidExpire;
+  final String? rsa;
+  final String? rsaExpire;
+  final String? drivingLicense;
+  final String? dlNumber;
+  final String? dlExpireDate;
 
   Guard({
     this.id,
     this.userId,
+    this.guardId,
+    this.guardType,
+    this.joinDate,
+    this.payPerHour,
     this.gender,
+    this.dob,
+    this.language,
+    this.height,
+    this.weight,
     this.city,
     this.state,
     this.country,
+    this.zipCode,
     this.address,
-    this.payPerHour,
+    this.securityLicense,
+    this.securityLicenseExpire,
+    this.firstAid,
+    this.firstAidExpire,
+    this.rsa,
+    this.rsaExpire,
+    this.drivingLicense,
+    this.dlNumber,
+    this.dlExpireDate,
   });
+
+  /// Coerces numeric-or-string JSON values to a trimmed String? (height/weight
+  /// arrive as numbers from the API but display as text).
+  static String? _str(dynamic v) =>
+      v == null ? null : v.toString().trim().isEmpty ? null : v.toString();
 
   factory Guard.fromJson(Map<String, dynamic> json) {
     return Guard(
       id: json['id'],
       userId: json['user_id'],
+      guardId: json['guard_id'],
+      guardType: json['guard_type'],
+      joinDate: _str(json['join_date']),
+      payPerHour: json['pay_per_hour'],
       gender: json['gender'],
+      dob: _str(json['dob']),
+      language: json['language'],
+      height: _str(json['height']),
+      weight: _str(json['weight']),
       city: json['city'],
       state: json['state'],
       country: json['country'],
+      zipCode: _str(json['zip_code']),
       address: json['address'],
-      payPerHour: json['pay_per_hour'],
+      securityLicense: json['security_license'],
+      securityLicenseExpire: _str(json['security_license_expire']),
+      firstAid: json['first_aid'],
+      firstAidExpire: _str(json['first_aid_expire']),
+      rsa: json['rsa'],
+      rsaExpire: _str(json['rsa_expire']),
+      drivingLicense: json['driving_license'],
+      dlNumber: _str(json['dl_number']),
+      dlExpireDate: _str(json['dl_expire_date']),
     );
   }
 
@@ -203,12 +262,29 @@ class Guard {
     return {
       "id": id,
       "user_id": userId,
+      "guard_id": guardId,
+      "guard_type": guardType,
+      "join_date": joinDate,
+      "pay_per_hour": payPerHour,
       "gender": gender,
+      "dob": dob,
+      "language": language,
+      "height": height,
+      "weight": weight,
       "city": city,
       "state": state,
       "country": country,
+      "zip_code": zipCode,
       "address": address,
-      "pay_per_hour": payPerHour,
+      "security_license": securityLicense,
+      "security_license_expire": securityLicenseExpire,
+      "first_aid": firstAid,
+      "first_aid_expire": firstAidExpire,
+      "rsa": rsa,
+      "rsa_expire": rsaExpire,
+      "driving_license": drivingLicense,
+      "dl_number": dlNumber,
+      "dl_expire_date": dlExpireDate,
     };
   }
 }

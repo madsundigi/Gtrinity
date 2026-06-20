@@ -1,5 +1,6 @@
 import 'package:chef_king/core/imports/app_imports.dart';
 import 'package:chef_king/presentation/documents/document_screen.dart';
+import 'package:chef_king/presentation/profile/edit_profile_screen.dart';
 import '../bloc/profile_bloc.dart';
 import '../bloc/profile_event.dart';
 import '../bloc/profile_state.dart';
@@ -64,32 +65,40 @@ class ProfileBody extends StatelessWidget {
 
               // Profile Options
               _ProfileOption(
-                icon: Icons.person_outline,
-                title: 'Personal Info',
-                subtitle: 'Contacts & Emergency details',
-                onTap: () {},
+                icon: Icons.edit_outlined,
+                title: 'Edit Profile',
+                subtitle: 'Name, photo, personal & address details',
+                onTap: () async {
+                  if (user == null) return;
+                  final updated = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditProfileScreen(user: user),
+                    ),
+                  );
+                  if (updated == true && context.mounted) {
+                    context.read<ProfileBloc>().add(LoadProfileData());
+                  }
+                },
               ),
               _ProfileOption(
                 icon: Icons.business_outlined,
-                title: 'Assigned Company',
-                subtitle: user?.guards?.city ?? 'Global Tech HQ - North Gate',
-                onTap: () {},
-              ),
-              _ProfileOption(
-                icon: Icons.lock_outline,
-                title: 'Change Password',
-                subtitle: 'Last updated 3 months ago',
+                title: 'Assigned Location',
+                subtitle: user?.guards?.city ?? 'Not assigned',
                 onTap: () {},
               ),
               _ProfileOption(
                 icon: Icons.folder_shared_outlined,
                 title: 'My Documents',
-                subtitle: 'ID Proofs, Licenses & Certifications',
-                onTap: () {
-                  Navigator.push(
+                subtitle: 'Licenses, certifications & expiry status',
+                onTap: () async {
+                  final updated = await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const DocumentScreen()),
                   );
+                  if (updated == true && context.mounted) {
+                    context.read<ProfileBloc>().add(LoadProfileData());
+                  }
                 },
               ),
 

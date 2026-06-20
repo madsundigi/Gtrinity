@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../../../core/constants/app_strings.dart';
 import '../../../data/models/auth/LoginRequest.dart';
 import '../../../data/models/auth/LoginResponse.dart';
@@ -14,6 +15,17 @@ class AuthUseCase {
 
   Future<bool> logout() {
     return _repository.logout();
+  }
+
+  Future<User> getProfile() {
+    return _repository.getProfile();
+  }
+
+  Future<User> updateProfile({
+    required Map<String, String> fields,
+    Map<String, File>? files,
+  }) {
+    return _repository.updateProfile(fields: fields, files: files);
   }
 
   ({String? emailError, String? passwordError}) validateForm({
