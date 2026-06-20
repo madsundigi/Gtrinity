@@ -41,11 +41,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String? _gender;
   DateTime? _dob;
 
-  // Client (dropdown + free text)
-  List<Map<String, dynamic>> _clients = [];
-  int? _clientId;
-  final _clientName = TextEditingController();
-
   // Documents (mandatory) + driving licence (optional)
   File? _securityLicense;
   DateTime? _securityLicenseExpire;
@@ -81,8 +76,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _state.text = guard?.state ?? '';
     _country.text = guard?.country ?? '';
     _zip.text = guard?.zipCode ?? '';
-    _clientName.text = guard?.clientName ?? '';
-    _clientId = guard?.clientId;
     _dlNumber.text = guard?.dlNumber ?? '';
     _gender = _genders.contains(guard?.gender) ? guard?.gender : null;
     _dob = _tryDate(guard?.dob);
@@ -94,30 +87,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _hasFA = (guard?.firstAid ?? '').isNotEmpty;
     _hasRSA = (guard?.rsa ?? '').isNotEmpty;
     _flags = guard?.fieldFlags ?? const {};
-    _loadClients();
-  }
-
-  Future<void> _loadClients() async {
-    try {
-      final list = await sl<AuthUseCase>().getClients();
-      if (!mounted) return;
-      setState(() {
-        _clients = list;
-        // Drop a dangling pre-filled link (client deleted / different scope) so
-        // the dropdown never holds a value that isn't in its items. The typed
-        // name stays in the free-text field.
-        if (_clientId != null && !_clients.any((c) => c['id'] == _clientId)) {
-          _clientId = null;
-        }
-      });
-    } catch (_) {/* dropdown just stays empty; free text still works */}
   }
 
   @override
   void dispose() {
     for (final c in [
       _name, _phone, _height, _weight, _language, _address,
-      _city, _state, _country, _zip, _clientName, _dlNumber,
+      _city, _state, _country, _zip, _dlNumber,
     ]) {
       c.dispose();
     }
@@ -166,20 +142,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'state': _state.text.trim(),
       'country': _country.text.trim(),
       'zip_code': _zip.text.trim(),
-      'client_name': _clientName.text.trim(),
       'dl_number': _dlNumber.text.trim(),
     };
     if (_dob != null) fields['dob'] = _api(_dob!);
-    // Only link client_id when the typed name still matches the picked client;
-    // if the guard edited the free-text, send the name alone (no stale link).
-    if (_clientId != null) {
-      final match =
-          _clients.firstWhere((c) => c['id'] == _clientId, orElse: () => const {});
-      if (match.isNotEmpty &&
-          '${match['name']}'.trim() == _clientName.text.trim()) {
-        fields['client_id'] = _clientId.toString();
-      }
-    }
     if (_securityLicenseExpire != null) {
       fields['security_license_expire'] = _api(_securityLicenseExpire!);
     }
@@ -414,47 +379,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: _text('Zip Code', _zip,
                   field: 'zip_code', keyboard: TextInputType.number)),
         ]),
-        const SizedBox(height: 8),
-        _sectionTitle('Client / Site'),
-        _clientField(),
-      ],
-    );
-  }
-
-  Widget _clientField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (_clients.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: DropdownButtonFormField<int?>(
-              value: _clients.any((c) => c['id'] == _clientId) ? _clientId : null,
-              dropdownColor: AppColors.buttonColor,
-              style: const TextStyle(color: Colors.white),
-              iconEnabledColor: AppColors.subTitleTextColor,
-              decoration: _dec('Select Client (optional)'),
-              items: [
-                const DropdownMenuItem<int?>(
-                    value: null, child: Text('— Not listed / type below —')),
-                ..._clients.map((c) => DropdownMenuItem<int?>(
-                      value: c['id'] as int?,
-                      child: Text('${c['name']}'),
-                    )),
-              ],
-              onChanged: (v) {
-                setState(() {
-                  _clientId = v;
-                  if (v != null) {
-                    final match =
-                        _clients.firstWhere((c) => c['id'] == v, orElse: () => {});
-                    if (match.isNotEmpty) _clientName.text = '${match['name']}';
-                  }
-                });
-              },
-            ),
-          ),
-        _text('Client / Site Name', _clientName, field: 'client_name'),
+        // Client/site assignment is handled by the admin via rostering, not here.
       ],
     );
   }
@@ -771,7 +696,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'state': 'State',
       'country': 'Country',
       'zip_code': 'Zip Code',
-      'client_name': 'Client',
       'security_license': 'Security License',
       'first_aid': 'First Aid',
       'rsa': 'RSA',

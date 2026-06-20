@@ -17,9 +17,6 @@ abstract class AuthRepository {
     Map<String, File>? files,
   });
 
-  /// Admin-created clients for the onboarding dropdown (id + name).
-  Future<List<Map<String, dynamic>>> getClients();
-
   /// Submits the first-login onboarding. Returns the activated User on success;
   /// throws an [OnboardingValidation] carrying per-field errors on a 422.
   Future<User> completeOnboarding({

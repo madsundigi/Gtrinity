@@ -20,7 +20,6 @@ class ApiConstants {
   static const String uploadDocumentEndpoint = 'documents/upload';
   static const String profileEndpoint = 'profile';
   static const String updateProfileEndpoint = 'profile/update';
-  static const String clientsEndpoint = 'clients';
   static const String completeOnboardingEndpoint = 'onboarding/complete';
 
   // Root host (no /api/guard) for serving uploaded files (documents, profiles).

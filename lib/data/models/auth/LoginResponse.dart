@@ -194,10 +194,8 @@ class Guard {
   final String? drivingLicense;
   final String? dlNumber;
   final String? dlExpireDate;
-  // Onboarding lifecycle + guard-entered client + admin correction flags
+  // Onboarding lifecycle + admin correction flags
   final String? onboardingStatus; // pending | completed
-  final int? clientId;
-  final String? clientName;
   final Map<String, String> fieldFlags; // field -> admin remark
 
   Guard({
@@ -227,8 +225,6 @@ class Guard {
     this.dlNumber,
     this.dlExpireDate,
     this.onboardingStatus,
-    this.clientId,
-    this.clientName,
     this.fieldFlags = const {},
   });
 
@@ -278,10 +274,6 @@ class Guard {
       dlNumber: _str(json['dl_number']),
       dlExpireDate: _str(json['dl_expire_date']),
       onboardingStatus: json['onboarding_status'],
-      clientId: json['client_id'] is int
-          ? json['client_id']
-          : int.tryParse('${json['client_id'] ?? ''}'),
-      clientName: json['client_name'],
       fieldFlags: _flags(json['field_flags']),
     );
   }
@@ -314,8 +306,6 @@ class Guard {
       "dl_number": dlNumber,
       "dl_expire_date": dlExpireDate,
       "onboarding_status": onboardingStatus,
-      "client_id": clientId,
-      "client_name": clientName,
       "field_flags": fieldFlags,
     };
   }

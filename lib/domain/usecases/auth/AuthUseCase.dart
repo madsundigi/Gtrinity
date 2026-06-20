@@ -28,10 +28,6 @@ class AuthUseCase {
     return _repository.updateProfile(fields: fields, files: files);
   }
 
-  Future<List<Map<String, dynamic>>> getClients() {
-    return _repository.getClients();
-  }
-
   Future<User> completeOnboarding({
     required Map<String, String> fields,
     Map<String, File>? files,

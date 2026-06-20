@@ -64,14 +64,6 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getClients() async {
-    return safeApiCall(
-      () => _apiClient.dio.get(ApiConstants.clientsEndpoint),
-      (data) => List<Map<String, dynamic>>.from(data['data'] ?? const []),
-    );
-  }
-
-  @override
   Future<User> completeOnboarding({
     required Map<String, String> fields,
     Map<String, File>? files,
