@@ -1,0 +1,102 @@
+﻿
+Running Gradle task 'assembleRelease'...                        
+flutter : Your project is 
+configured with Android NDK 
+26.1.10909125, but the following 
+plugin(s) depend on a different 
+Android NDK version:
+At line:1 char:53
++ ... ogram 
+Files\java\jdk-17.0.12"; flutter 
+build apk > build_log.txt 2>&1
++                                  
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo          : N    
+otSpecified: (Your project     
+is...id NDK version::String    ) 
+[], RemoteException
+    + FullyQualifiedErrorId : N    
+ativeCommandError
+ 
+- geolocator_android requires 
+Android NDK 27.0.12077973
+- package_info_plus requires 
+Android NDK 27.0.12077973
+- shared_preferences_android 
+requires Android NDK 27.0.12077973
+Fix this issue by using the 
+highest Android NDK version (they 
+are backward compatible).
+Add the following to C:\guard_app_f
+lutter\android\app\build.gradle.kts
+:
+
+    android {
+        ndkVersion = 
+"27.0.12077973"
+        ...
+    }
+
+lib/presentation/home/home_screen.d
+art:23:18: Error: Member not 
+found: 'CKSnackBar.show'.
+      CKSnackBar.show(context, 
+state.attendanceMessage!);
+                 ^^^^
+/C:/Users/xpmkm/AppData/Local/Pub/C
+ache/hosted/pub.dev/geolocator_andr
+oid-5.0.2/lib/src/types/foreground_
+settings.dart:122:23: Error: The 
+method 'toARGB32' isn't defined 
+for the class 'Color'.
+ - 'Color' is from 'dart:ui'.
+Try correcting the name to the 
+name of an existing method, or 
+defining a method named 'toARGB32'.
+      'color': color?.toARGB32(),
+                      ^^^^^^^^
+lib/presentation/home/widget/home_b
+ody.dart:238:38: Error: The getter 
+'data' isn't defined for the class 
+'HomeBody'.
+ - 'HomeBody' is from 'package:chef
+_king/presentation/home/widget/home
+_body.dart' ('lib/presentation/home
+/widget/home_body.dart').
+Try correcting the name to the 
+name of an existing getter, or 
+defining a getter or field named 
+'data'.
+          
+_buildPunchButton(context, data),
+                                   
+  ^^^^
+Target kernel_snapshot_program 
+failed: Exception
+
+
+FAILURE: Build failed with an 
+exception.
+
+* What went wrong:
+Execution failed for task 
+':app:compileFlutterBuildRelease'.
+> Process 'command 
+'C:\flutter\bin\flutter.bat'' 
+finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to 
+get the stack trace.
+> Run with --info or --debug 
+option to get more log output.
+> Run with --scan to get full 
+insights.
+> Get more help at 
+https://help.gradle.org.
+
+BUILD FAILED in 33s
+Running Gradle task 'assembleRelease'...                           34.2s
+Gradle task assembleRelease failed 
+with exit code 1

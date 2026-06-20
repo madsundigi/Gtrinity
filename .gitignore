@@ -1,0 +1,78 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.vscode/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you actually want to
+# potentially check in, but the settings.json file structure varies from one
+# user to another.
+.vscode/settings.json
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication logging
+symbolication/
+
+# Android related
+**/android/**/generated/
+**/android/gen/
+**/android/out/
+**/android/app/src/main/res/drawable-*/
+**/android/app/src/main/res/mipmap-*/
+**/android/app/src/main/res/values/*.xml
+!**/android/app/src/main/res/values/strings.xml
+!**/android/app/src/main/res/values/styles.xml
+!**/android/app/src/main/res/values/colors.xml
+
+# iOS related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner/GeneratedPluginRegistrant.[mh]
+**/ios/Runner/GeneratedPluginRegistrant.swift
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/DerivedData/
+**/ios/.generated/
+**/ios/.pub/
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/.dart_tool/
+**/ios/.flutter-plugins
+**/ios/.flutter-plugins-dependencies
+**/ios/.packages
+
+# macOS related
+**/macos/Flutter/ephemeral/
+
+# Linux related
+**/linux/flutter/ephemeral/
+
+# Windows related
+**/windows/flutter/ephemeral/
+
+# web related
+**/web/index.html
+!**/web/index.html

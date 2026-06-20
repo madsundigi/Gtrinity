@@ -1,0 +1,34 @@
+﻿Analyzing guard_app_flutter...                                  
+
+   info - The import of 'dart:io' is unnecessary because all of the used elements are also provided by the import of 'package:chef_king/core/imports/app_imports.dart' - lib\app.dart:1:8 - unnecessary_import
+   info - The import of 'package:chef_king/core/routes/app_router.dart' is unnecessary because all of the used elements are also provided by the import of 'package:chef_king/core/imports/app_imports.dart' - lib\app.dart:4:8 - unnecessary_import
+   info - The import of 'package:chef_king/core/routes/app_routes.dart' is unnecessary because all of the used elements are also provided by the import of 'package:chef_king/core/imports/app_imports.dart' - lib\app.dart:5:8 - unnecessary_import
+   info - The import of '../../presentation/auth/bloc/forgot_password_bloc.dart' is unnecessary because all of the used elements are also provided by the import of 'package:chef_king/core/imports/app_imports.dart' - lib\core\bloc\bloc_providers.dart:4:8 - unnecessary_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\core\common\ck_overlay_loader.dart:22:33 - deprecated_member_use
+   info - The import of '../../presentation/home/bloc/home_bloc.dart' is unnecessary because all of the used elements are also provided by the import of 'package:chef_king/core/imports/app_imports.dart' - lib\core\di\injection.dart:8:8 - unnecessary_import
+  error - The named parameter 'locationSettings' isn't defined - lib\core\services\location_service.dart:33:7 - undefined_named_parameter
+   info - The file name 'LoginRequest.dart' isn't a lower_case_with_underscores identifier - lib\data\models\auth\LoginRequest.dart:1:1 - file_names
+   info - The file name 'LoginResponse.dart' isn't a lower_case_with_underscores identifier - lib\data\models\auth\LoginResponse.dart:1:1 - file_names
+   info - The file name 'AuthUseCase.dart' isn't a lower_case_with_underscores identifier - lib\domain\usecases\auth\AuthUseCase.dart:1:1 - file_names
+warning - Unused import: '../../../data/models/auth/LoginResponse.dart' - lib\presentation\auth\bloc\auth_bloc.dart:3:8 - unused_import
+   info - The import of '../../../domain/usecases/auth/AuthUseCase.dart' is unnecessary because all of the used elements are also provided by the import of '../../../core/imports/app_imports.dart' - lib\presentation\auth\bloc\forgot_password_bloc.dart:2:8 - unnecessary_import
+   info - The import of 'bloc/forgot_password_bloc.dart' is unnecessary because all of the used elements are also provided by the import of '../../core/imports/app_imports.dart' - lib\presentation\auth\forgot_password_screen.dart:2:8 - unnecessary_import
+   info - The import of '../bloc/forgot_password_bloc.dart' is unnecessary because all of the used elements are also provided by the import of 'package:chef_king/core/imports/app_imports.dart' - lib\presentation\auth\widget\forgot_password_body.dart:3:8 - unnecessary_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\home\widget\home_body.dart:202:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\profile\widget\profile_body.dart:143:42 - deprecated_member_use
+
+flutter : 16 issues found. (ran 
+in 18.7s)
+At line:1 char:1
++ flutter analyze > 
+analyze_log.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo          : 
+NotS    pecified: (16 issues 
+found. (r    an in 
+18.7s):String) [], Remot    
+eException
+    + FullyQualifiedErrorId : 
+Nati    veCommandError
+ 
