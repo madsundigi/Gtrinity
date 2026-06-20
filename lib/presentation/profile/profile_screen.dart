@@ -1,4 +1,5 @@
 import 'package:chef_king/core/imports/app_imports.dart';
+import 'package:chef_king/presentation/profile/edit_profile_screen.dart';
 import 'bloc/profile_bloc.dart';
 import 'bloc/profile_event.dart';
 import 'bloc/profile_state.dart';
@@ -55,8 +56,21 @@ class ProfileScreen extends CKBaseScreen<ProfileBloc, ProfileState> {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.settings),
+          tooltip: 'Edit profile',
+          onPressed: () async {
+            final user = AppCache.getLoginResponse()?.data?.user;
+            if (user == null) return;
+            final updated = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => EditProfileScreen(user: user),
+              ),
+            );
+            if (updated == true && context.mounted) {
+              context.read<ProfileBloc>().add(LoadProfileData());
+            }
+          },
+          icon: const Icon(Icons.edit_outlined),
         ),
       ],
     );

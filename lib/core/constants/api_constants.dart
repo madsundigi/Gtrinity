@@ -18,4 +18,13 @@ class ApiConstants {
   static const String applyLeaveEndpoint = 'leaves/apply';
   static const String documentsEndpoint = 'documents';
   static const String uploadDocumentEndpoint = 'documents/upload';
+  static const String profileEndpoint = 'profile';
+  static const String updateProfileEndpoint = 'profile/update';
+
+  // Root host (no /api/guard) for serving uploaded files (documents, profiles).
+  static const String fileHost = 'http://10.0.2.2:8080/';
+
+  /// Full URL for a mandatory/driving document stored under public/upload/document.
+  static String documentUrl(String fileName) =>
+      '${fileHost}upload/document/$fileName';
 }
