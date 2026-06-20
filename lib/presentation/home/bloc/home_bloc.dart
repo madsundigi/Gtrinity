@@ -1,5 +1,6 @@
 import 'package:chef_king/domain/usecases/home/home_use_case.dart';
 import 'package:chef_king/core/services/location_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'home_event.dart';
 import 'home_state.dart';
@@ -12,6 +13,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadHomeData>(_onLoadHomeData);
     on<PunchInRequested>(_onPunchInRequested);
     on<PunchOutRequested>(_onPunchOutRequested);
+  }
+
+  /// Pulls the human-friendly message the API returned (e.g. geofence
+  /// rejection) out of a failed request, falling back to a generic line.
+  String _apiMessage(Object e, String fallback) {
+    if (e is DioException) {
+      final data = e.response?.data;
+      if (data is Map && data['message'] != null) {
+        return data['message'].toString();
+      }
+    }
+    return fallback;
   }
 
   Future<void> _onLoadHomeData(
@@ -58,7 +71,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(state.copyWith(
         isPunching: false,
-        errorMessage: 'Punch in failed: ${e.toString()}',
+        errorMessage: _apiMessage(e, 'Punch in failed. Please try again.'),
       ));
     }
   }
@@ -81,7 +94,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(state.copyWith(
         isPunching: false,
-        errorMessage: 'Punch out failed: ${e.toString()}',
+        errorMessage: _apiMessage(e, 'Punch out failed. Please try again.'),
       ));
     }
   }
