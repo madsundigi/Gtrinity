@@ -71,4 +71,24 @@ class HomeRepositoryImpl implements HomeRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> acceptDuty(int id) async {
+    try {
+      final response = await _apiClient.dio.post(ApiConstants.acceptDutyEndpoint(id));
+      return Map<String, dynamic>.from(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> rejectDuty(int id) async {
+    try {
+      final response = await _apiClient.dio.post(ApiConstants.rejectDutyEndpoint(id));
+      return Map<String, dynamic>.from(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

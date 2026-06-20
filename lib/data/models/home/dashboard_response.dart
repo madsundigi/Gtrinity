@@ -80,8 +80,10 @@ class TodayDuty {
   final ClientDetails? clients;
   final LocationDetails? locationes;
   final DutyDetails? dutys;
+  final String? status; // pending / accepted / rejected
 
   TodayDuty({
+    this.status,
     this.id,
     this.guardId,
     this.startDate,
@@ -121,6 +123,7 @@ class TodayDuty {
       clients: json['clients'] != null ? ClientDetails.fromJson(json['clients']) : null,
       locationes: json['locationes'] != null ? LocationDetails.fromJson(json['locationes']) : null,
       dutys: json['dutys'] != null ? DutyDetails.fromJson(json['dutys']) : null,
+      status: json['status']?.toString(),
     );
   }
 
@@ -140,6 +143,7 @@ class TodayDuty {
       'clients': clients?.toJson(),
       'locationes': locationes?.toJson(),
       'dutys': dutys?.toJson(),
+      'status': status,
     };
   }
 }

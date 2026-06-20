@@ -1,5 +1,7 @@
 import 'package:chef_king/core/imports/app_imports.dart';
 import 'package:chef_king/data/models/home/dashboard_response.dart';
+import 'package:chef_king/presentation/duties/bloc/duties_bloc.dart';
+import 'package:chef_king/presentation/duties/bloc/duties_event.dart';
 
 class DutyCard extends StatelessWidget {
   final TodayDuty duty;
@@ -68,27 +70,75 @@ class DutyCard extends StatelessWidget {
           _buildInfoRow(context, Icons.calendar_today_outlined, duty.startDate ?? "No Date"),
           const SizedBox(height: 10),
           _buildInfoRow(context, Icons.access_time, "${duty.dutys?.averageHourPerDay ?? 0} Hours Scheduled"),
+          if ((duty.status ?? 'pending').toLowerCase() == 'pending') ...[
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => context
+                        .read<DutiesBloc>()
+                        .add(RespondToDuty(dutyId: duty.id ?? 0, accept: false)),
+                    icon: const Icon(Icons.close, size: 18),
+                    label: const Text('Reject'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.redAccent,
+                      side: const BorderSide(color: Colors.redAccent),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => context
+                        .read<DutiesBloc>()
+                        .add(RespondToDuty(dutyId: duty.id ?? 0, accept: true)),
+                    icon: const Icon(Icons.check, size: 18),
+                    label: const Text('Accept'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.greenColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
   }
 
   Widget _buildStatusBadge(BuildContext context, TodayDuty duty) {
-    // Basic logic to determine if duty is today
-    final now = DateTime.now();
-    final todayStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-    final isToday = duty.startDate?.startsWith(todayStr) ?? false;
+    final status = (duty.status ?? 'pending').toLowerCase();
+    Color color;
+    String label;
+    switch (status) {
+      case 'accepted':
+        color = AppColors.greenColor;
+        label = 'ACCEPTED';
+        break;
+      case 'rejected':
+        color = Colors.redAccent;
+        label = 'REJECTED';
+        break;
+      default:
+        color = Colors.orangeAccent;
+        label = 'PENDING';
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: isToday ? AppColors.greenC20PerColor : Colors.white10,
+        color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
       ),
       child: CKText(
-        isToday ? "TODAY" : "SCHEDULED",
+        label,
         style: context.textTheme.titleSmall?.copyWith(
-          color: isToday ? AppColors.greenColor : AppColors.subTitleTextColor,
+          color: color,
           fontSize: 10,
           fontWeight: FontWeight.bold,
         ),

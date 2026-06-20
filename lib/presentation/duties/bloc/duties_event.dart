@@ -16,3 +16,13 @@ class LoadDuties extends DutiesEvent {
 }
 
 class LoadMoreDuties extends DutiesEvent {}
+
+/// Guard accepts (accept = true) or rejects (accept = false) an assigned shift.
+class RespondToDuty extends DutiesEvent {
+  final int dutyId;
+  final bool accept;
+  const RespondToDuty({required this.dutyId, required this.accept});
+
+  @override
+  List<Object?> get props => [dutyId, accept];
+}
