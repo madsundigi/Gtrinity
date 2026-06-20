@@ -1,6 +1,7 @@
 import 'package:chef_king/core/imports/app_imports.dart';
 import 'package:chef_king/presentation/incidents/incident_screen.dart';
 import 'package:chef_king/presentation/leave/leave_screen.dart';
+import 'package:chef_king/presentation/onboarding/onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppRouter {
@@ -10,6 +11,8 @@ class AppRouter {
     return switch (settings.name) {
       AppRoutes.splash => _buildPageRoute(const SplashScreen(), settings),
       AppRoutes.main => _buildPageRoute(const MainScreen(), settings),
+      AppRoutes.onboarding =>
+          _buildPageRoute(const OnboardingScreen(), settings),
       AppRoutes.login => _buildPageRoute(const LoginScreen(), settings),
       AppRoutes.forgotPassword =>
           _buildPageRoute(const ForgotPasswordScreen(), settings),

@@ -194,6 +194,9 @@ class Guard {
   final String? drivingLicense;
   final String? dlNumber;
   final String? dlExpireDate;
+  // Onboarding lifecycle + admin correction flags
+  final String? onboardingStatus; // pending | completed
+  final Map<String, String> fieldFlags; // field -> admin remark
 
   Guard({
     this.id,
@@ -221,12 +224,27 @@ class Guard {
     this.drivingLicense,
     this.dlNumber,
     this.dlExpireDate,
+    this.onboardingStatus,
+    this.fieldFlags = const {},
   });
+
+  bool get isOnboardingComplete => onboardingStatus == 'completed';
+
+  /// field_flags can arrive as a JSON object, a JSON string, or null.
+  static Map<String, String> _flags(dynamic v) {
+    if (v is Map) {
+      return v.map((k, val) => MapEntry(k.toString(), val?.toString() ?? ''));
+    }
+    return const {};
+  }
 
   /// Coerces numeric-or-string JSON values to a trimmed String? (height/weight
   /// arrive as numbers from the API but display as text).
-  static String? _str(dynamic v) =>
-      v == null ? null : v.toString().trim().isEmpty ? null : v.toString();
+  static String? _str(dynamic v) {
+    if (v == null) return null;
+    final s = v.toString().trim();
+    return s.isEmpty ? null : s;
+  }
 
   factory Guard.fromJson(Map<String, dynamic> json) {
     return Guard(
@@ -255,6 +273,8 @@ class Guard {
       drivingLicense: json['driving_license'],
       dlNumber: _str(json['dl_number']),
       dlExpireDate: _str(json['dl_expire_date']),
+      onboardingStatus: json['onboarding_status'],
+      fieldFlags: _flags(json['field_flags']),
     );
   }
 
@@ -285,6 +305,8 @@ class Guard {
       "driving_license": drivingLicense,
       "dl_number": dlNumber,
       "dl_expire_date": dlExpireDate,
+      "onboarding_status": onboardingStatus,
+      "field_flags": fieldFlags,
     };
   }
 }

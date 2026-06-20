@@ -28,6 +28,13 @@ class AuthUseCase {
     return _repository.updateProfile(fields: fields, files: files);
   }
 
+  Future<User> completeOnboarding({
+    required Map<String, String> fields,
+    Map<String, File>? files,
+  }) {
+    return _repository.completeOnboarding(fields: fields, files: files);
+  }
+
   ({String? emailError, String? passwordError}) validateForm({
     required String? email,
     required String? password,

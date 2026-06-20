@@ -16,7 +16,8 @@ class LoginScreen extends CKBaseScreen<AuthBloc, AuthState> {
     if (state.successMessage != null) {
       CKSnackBar.showSuccess(context, state.successMessage!);
       context.read<AuthBloc>().add(ClearMessages());
-      context.pushNamedAndRemoveUntil(AppRoutes.main, (route) => false);
+      // First-login guards go to onboarding; completed guards to the dashboard.
+      context.pushNamedAndRemoveUntil(AppRoutes.afterAuth(), (route) => false);
     }
 
     if (state.errorMessage != null) {
