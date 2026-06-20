@@ -62,4 +62,52 @@ class AuthRepositoryImpl implements AuthRepository {
       (data) => User.fromJson(data['data']['user']),
     );
   }
+
+  @override
+  Future<List<Map<String, dynamic>>> getClients() async {
+    return safeApiCall(
+      () => _apiClient.dio.get(ApiConstants.clientsEndpoint),
+      (data) => List<Map<String, dynamic>>.from(data['data'] ?? const []),
+    );
+  }
+
+  @override
+  Future<User> completeOnboarding({
+    required Map<String, String> fields,
+    Map<String, File>? files,
+  }) async {
+    final formMap = <String, dynamic>{...fields};
+    if (files != null) {
+      for (final entry in files.entries) {
+        final fileName = entry.value.path.split('/').last;
+        formMap[entry.key] =
+            await MultipartFile.fromFile(entry.value.path, filename: fileName);
+      }
+    }
+    try {
+      final response = await _apiClient.dio.post(
+        ApiConstants.completeOnboardingEndpoint,
+        data: FormData.fromMap(formMap),
+      );
+      return User.fromJson(response.data['data']['user']);
+    } on DioException catch (e) {
+      // 422 -> per-field validation errors for the UI to highlight.
+      final data = e.response?.data;
+      if (e.response?.statusCode == 422 && data is Map && data['errors'] is Map) {
+        final raw = data['errors'] as Map;
+        final flat = <String, String>{};
+        raw.forEach((key, value) {
+          final msg = value is List && value.isNotEmpty
+              ? value.first.toString()
+              : value.toString();
+          flat[key.toString()] = msg;
+        });
+        throw OnboardingValidation(flat);
+      }
+      if (data is Map && data['message'] != null) {
+        throw data['message'].toString();
+      }
+      rethrow;
+    }
+  }
 }

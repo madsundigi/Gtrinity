@@ -16,4 +16,24 @@ abstract class AuthRepository {
     required Map<String, String> fields,
     Map<String, File>? files,
   });
+
+  /// Admin-created clients for the onboarding dropdown (id + name).
+  Future<List<Map<String, dynamic>>> getClients();
+
+  /// Submits the first-login onboarding. Returns the activated User on success;
+  /// throws an [OnboardingValidation] carrying per-field errors on a 422.
+  Future<User> completeOnboarding({
+    required Map<String, String> fields,
+    Map<String, File>? files,
+  });
+}
+
+/// Raised when onboarding fails server-side validation; [errors] maps each
+/// field name to its first message so the UI can highlight it.
+class OnboardingValidation implements Exception {
+  final Map<String, String> errors;
+  OnboardingValidation(this.errors);
+
+  @override
+  String toString() => 'Please fix the highlighted fields.';
 }

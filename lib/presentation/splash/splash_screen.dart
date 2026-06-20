@@ -20,7 +20,8 @@ class SplashScreen extends CKBaseScreen<SplashBloc, SplashState> {
         context.pushReplacementNamed(AppRoutes.login);
         break;
       case NavigateToMain():
-        context.pushReplacementNamed(AppRoutes.main);
+        // Pending guards are routed into onboarding instead of the dashboard.
+        context.pushReplacementNamed(AppRoutes.afterAuth());
         break;
     }
   }
