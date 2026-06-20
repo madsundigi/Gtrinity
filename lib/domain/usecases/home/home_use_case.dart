@@ -22,4 +22,12 @@ class HomeUseCase {
   Future<DutiesResponse> getDuties({int page = 1}) {
     return _repository.getDuties(page: page);
   }
+
+  Future<Map<String, dynamic>> acceptDuty(int id) {
+    return _repository.acceptDuty(id);
+  }
+
+  Future<Map<String, dynamic>> rejectDuty(int id) {
+    return _repository.rejectDuty(id);
+  }
 }

@@ -9,6 +9,38 @@ class DutiesBloc extends Bloc<DutiesEvent, DutiesState> {
   DutiesBloc({required this.homeUseCase}) : super(const DutiesState()) {
     on<LoadDuties>(_onLoadDuties);
     on<LoadMoreDuties>(_onLoadMoreDuties);
+    on<RespondToDuty>(_onRespondToDuty);
+  }
+
+  Future<void> _onRespondToDuty(
+    RespondToDuty event,
+    Emitter<DutiesState> emit,
+  ) async {
+    emit(state.copyWith(errorMessage: null));
+    try {
+      final result = event.accept
+          ? await homeUseCase.acceptDuty(event.dutyId)
+          : await homeUseCase.rejectDuty(event.dutyId);
+
+      if (result['success'] == true) {
+        // Refresh the list so the new shift status is reflected.
+        final response = await homeUseCase.getDuties(page: 1);
+        if (response.success == true) {
+          emit(state.copyWith(
+            dutiesData: response,
+            duties: response.data?.data ?? [],
+            currentPage: response.data?.currentPage ?? 1,
+            hasReachedMax: response.data?.currentPage == response.data?.lastPage,
+          ));
+        }
+      } else {
+        emit(state.copyWith(
+          errorMessage: result['message']?.toString() ?? 'Action failed',
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(errorMessage: e.toString()));
+    }
   }
 
   Future<void> _onLoadDuties(
